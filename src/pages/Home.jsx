@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <section className="home-page">
+    <section className="home-page flex flex-col gap-[1.25em]">
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel iusto, in
         cum nobis enim magni pariatur reiciendis sed? Doloremque quos id
