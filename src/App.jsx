@@ -4,6 +4,7 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from 'react-router-dom';
+import { rootLoader } from './layouts/RootLayout';
 
 //layouts
 import RootLayout from './layouts/RootLayout';
@@ -12,14 +13,20 @@ import RootLayout from './layouts/RootLayout';
 import Home from './pages/Home';
 import Products from './pages/Products';
 import ShopppingCart from './pages/ShoppingCart';
-import ErrorPage from './pages/ErrorPage';
+import NotFoundPage from './pages/errors/NotFound';
+import FetchErrorPage from './pages/errors/FetchErrorPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<RootLayout />} errorElement={<ErrorPage />}>
+    <Route path="/" loader={rootLoader} element={<RootLayout />}>
       <Route index element={<Home />} />
-      <Route path="products" element={<Products />} />
+      <Route
+        path="products"
+        errorElement={<FetchErrorPage />}
+        element={<Products />}
+      />
       <Route path="cart" element={<ShopppingCart />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Route>,
   ),
 );

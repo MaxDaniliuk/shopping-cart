@@ -1,86 +1,106 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLoaderData } from 'react-router-dom';
+import { createContext } from 'react';
 import CustomNavLink from '../components/CustomNavLink';
 
+export async function rootLoader() {
+  const response = await fetch('https://fakestoreapi.com/products');
+  try {
+    if (!response.ok) {
+      throw new Error('Could not fetch products.');
+    }
+    const products = await response.json();
+    return { products };
+  } catch (error) {
+    return { products: null, error: error };
+  }
+}
+
+export const ProductsContext = createContext();
+
 export default function RootLayout() {
+  const { products, error } = useLoaderData();
+
   return (
-    <div className="root-layout flex h-screen flex-col bg-[#fafafa]">
-      <header className="bg-blue-950">
-        <nav className="flex items-center justify-center p-[1em] text-[#fafafa]">
-          <h1 className="text-3xl font-bold">e-Store</h1>
-          <div className="ml-auto flex gap-2">
-            <CustomNavLink to="/">Home</CustomNavLink>
-            <CustomNavLink to="products">Products</CustomNavLink>
-            <CustomNavLink to="cart">Cart</CustomNavLink>
-          </div>
-        </nav>
-      </header>
-      <main className="mx-auto max-w-[2000px] p-[2em]">
-        {/* // Centers each Outlet inside the main. */}
-        <Outlet />
-      </main>
-      <footer className="mt-auto">
-        <div className="flex items-center justify-center bg-blue-950 p-[0.5em] text-[#fafafa]">
-          <p className="flex gap-[0.25em]">
-            <span>©</span>
-            <span>{new Date().getFullYear()}</span>
-            <a
-              href="https://github.com/MaxDaniliuk/shopping-cart"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="(Opens in a new tab)"
-            >
-              <svg
-                className="w-[clamp(0.9rem,1vw+1rem,2.2rem)]"
-                viewBox="0 0 20 20"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-                fill="#000000"
+    <ProductsContext.Provider value={{ products, error }}>
+      <div className="root-layout flex h-screen flex-col bg-[#fafafa]">
+        <header className="bg-blue-950">
+          <nav className="flex items-center justify-center p-[1em] text-[#fafafa]">
+            <h1 className="mr-auto text-3xl font-bold">e-Store</h1>
+            <div className="flex gap-2">
+              <CustomNavLink to="/">Home</CustomNavLink>
+              <CustomNavLink to="products">Products</CustomNavLink>
+              <CustomNavLink to="cart">Cart</CustomNavLink>
+            </div>
+          </nav>
+        </header>
+        <main className="mx-auto max-w-[2000px] p-[2em]">
+          {/* // Centers each Outlet inside the main. */}
+          <Outlet />
+        </main>
+        <footer className="mt-auto">
+          <div className="flex items-center justify-center bg-blue-950 p-[0.5em] text-[#fafafa]">
+            <p className="flex gap-[0.25em]">
+              <span>©</span>
+              <span>{new Date().getFullYear()}</span>
+              <a
+                href="https://github.com/MaxDaniliuk/shopping-cart"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="(Opens in a new tab)"
               >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  {' '}
-                  <title>github [#142]</title> <desc>Created with Sketch.</desc>{' '}
-                  <defs> </defs>{' '}
+                <svg
+                  className="w-[clamp(0.9rem,1vw+1rem,2.2rem)]"
+                  viewBox="0 0 20 20"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                  fill="#000000"
+                >
+                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                   <g
-                    id="Page-1"
-                    stroke="none"
-                    strokeWidth="1"
-                    fill="none"
-                    fillRule="evenodd"
-                  >
+                    id="SVGRepo_tracerCarrier"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
                     {' '}
+                    <title>github [#142]</title>{' '}
+                    <desc>Created with Sketch.</desc> <defs> </defs>{' '}
                     <g
-                      id="Dribbble-Light-Preview"
-                      transform="translate(-140.000000, -7559.000000)"
-                      fill="#fafafa"
+                      id="Page-1"
+                      stroke="none"
+                      strokeWidth="1"
+                      fill="none"
+                      fillRule="evenodd"
                     >
                       {' '}
                       <g
-                        id="icons"
-                        transform="translate(56.000000, 160.000000)"
+                        id="Dribbble-Light-Preview"
+                        transform="translate(-140.000000, -7559.000000)"
+                        fill="#fafafa"
                       >
                         {' '}
-                        <path
-                          d="M94,7399 C99.523,7399 104,7403.59 104,7409.253 C104,7413.782 101.138,7417.624 97.167,7418.981 C96.66,7419.082 96.48,7418.762 96.48,7418.489 C96.48,7418.151 96.492,7417.047 96.492,7415.675 C96.492,7414.719 96.172,7414.095 95.813,7413.777 C98.04,7413.523 100.38,7412.656 100.38,7408.718 C100.38,7407.598 99.992,7406.684 99.35,7405.966 C99.454,7405.707 99.797,7404.664 99.252,7403.252 C99.252,7403.252 98.414,7402.977 96.505,7404.303 C95.706,7404.076 94.85,7403.962 94,7403.958 C93.15,7403.962 92.295,7404.076 91.497,7404.303 C89.586,7402.977 88.746,7403.252 88.746,7403.252 C88.203,7404.664 88.546,7405.707 88.649,7405.966 C88.01,7406.684 87.619,7407.598 87.619,7408.718 C87.619,7412.646 89.954,7413.526 92.175,7413.785 C91.889,7414.041 91.63,7414.493 91.54,7415.156 C90.97,7415.418 89.522,7415.871 88.63,7414.304 C88.63,7414.304 88.101,7413.319 87.097,7413.247 C87.097,7413.247 86.122,7413.234 87.029,7413.87 C87.029,7413.87 87.684,7414.185 88.139,7415.37 C88.139,7415.37 88.726,7417.2 91.508,7416.58 C91.513,7417.437 91.522,7418.245 91.522,7418.489 C91.522,7418.76 91.338,7419.077 90.839,7418.982 C86.865,7417.627 84,7413.783 84,7409.253 C84,7403.59 88.478,7399 94,7399"
-                          id="github-[#142]"
+                        <g
+                          id="icons"
+                          transform="translate(56.000000, 160.000000)"
                         >
                           {' '}
-                        </path>{' '}
+                          <path
+                            d="M94,7399 C99.523,7399 104,7403.59 104,7409.253 C104,7413.782 101.138,7417.624 97.167,7418.981 C96.66,7419.082 96.48,7418.762 96.48,7418.489 C96.48,7418.151 96.492,7417.047 96.492,7415.675 C96.492,7414.719 96.172,7414.095 95.813,7413.777 C98.04,7413.523 100.38,7412.656 100.38,7408.718 C100.38,7407.598 99.992,7406.684 99.35,7405.966 C99.454,7405.707 99.797,7404.664 99.252,7403.252 C99.252,7403.252 98.414,7402.977 96.505,7404.303 C95.706,7404.076 94.85,7403.962 94,7403.958 C93.15,7403.962 92.295,7404.076 91.497,7404.303 C89.586,7402.977 88.746,7403.252 88.746,7403.252 C88.203,7404.664 88.546,7405.707 88.649,7405.966 C88.01,7406.684 87.619,7407.598 87.619,7408.718 C87.619,7412.646 89.954,7413.526 92.175,7413.785 C91.889,7414.041 91.63,7414.493 91.54,7415.156 C90.97,7415.418 89.522,7415.871 88.63,7414.304 C88.63,7414.304 88.101,7413.319 87.097,7413.247 C87.097,7413.247 86.122,7413.234 87.029,7413.87 C87.029,7413.87 87.684,7414.185 88.139,7415.37 C88.139,7415.37 88.726,7417.2 91.508,7416.58 C91.513,7417.437 91.522,7418.245 91.522,7418.489 C91.522,7418.76 91.338,7419.077 90.839,7418.982 C86.865,7417.627 84,7413.783 84,7409.253 C84,7403.59 88.478,7399 94,7399"
+                            id="github-[#142]"
+                          >
+                            {' '}
+                          </path>{' '}
+                        </g>{' '}
                       </g>{' '}
                     </g>{' '}
-                  </g>{' '}
-                </g>
-              </svg>
-            </a>
-          </p>
-        </div>
-      </footer>
-    </div>
+                  </g>
+                </svg>
+              </a>
+            </p>
+          </div>
+        </footer>
+      </div>
+    </ProductsContext.Provider>
   );
 }
