@@ -4,7 +4,7 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from 'react-router-dom';
-import { rootLoader } from './layouts/RootLayout';
+import { rootLoader } from './loaders/rootLoader';
 
 //layouts
 import RootLayout from './layouts/RootLayout';

@@ -1,41 +1,36 @@
 import { Outlet, useLoaderData } from 'react-router-dom';
-import { createContext } from 'react';
+import { useState } from 'react';
 import CustomNavLink from '../components/CustomNavLink';
-
-export async function rootLoader() {
-  const response = await fetch('https://fakestoreapi.com/products');
-  try {
-    if (!response.ok) {
-      throw new Error('Could not fetch products.');
-    }
-    const products = await response.json();
-    return { products };
-  } catch (error) {
-    return { products: null, error: error };
-  }
-}
-
-export const ProductsContext = createContext();
+import ProductsContext from '../contexts/ProductsContext';
 
 export default function RootLayout() {
+  const [cartItems, setCartItems] = useState([]);
   const { products, error } = useLoaderData();
 
   return (
     <ProductsContext.Provider value={{ products, error }}>
-      <div className="root-layout flex h-screen flex-col bg-[#fafafa]">
+      <div className="root-layout flex min-h-screen flex-col bg-teal-500">
         <header className="bg-blue-950">
           <nav className="flex items-center justify-center p-[1em] text-[#fafafa]">
             <h1 className="mr-auto text-3xl font-bold">e-Store</h1>
             <div className="flex gap-2">
               <CustomNavLink to="/">Home</CustomNavLink>
               <CustomNavLink to="products">Products</CustomNavLink>
-              <CustomNavLink to="cart">Cart</CustomNavLink>
+              <CustomNavLink to="cart">
+                Cart{' '}
+                <span>
+                  {[...cartItems].reduce(
+                    (total, item) => total + item.inCart,
+                    0,
+                  )}
+                </span>
+              </CustomNavLink>
             </div>
           </nav>
         </header>
         <main className="mx-auto max-w-[2000px] p-[2em]">
           {/* // Centers each Outlet inside the main. */}
-          <Outlet />
+          <Outlet context={[cartItems, setCartItems]} />
         </main>
         <footer className="mt-auto">
           <div className="flex items-center justify-center bg-blue-950 p-[0.5em] text-[#fafafa]">
