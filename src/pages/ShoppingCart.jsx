@@ -1,7 +1,7 @@
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, Link } from 'react-router-dom';
 import IndividualCart from '../components/IndividualCart';
-import Button from '../components/Button';
 import useCartActions from '../hooks/useCartActions';
+import Button from '../components/Button';
 
 export default function ShopppingCart() {
   const [cartItems, setCartItems] = useOutletContext();
@@ -15,7 +15,9 @@ export default function ShopppingCart() {
     <div>
       <div>
         <h2>Shopping Cart</h2>
-        <Button style={{ padding: '0.5em' }}>Proceed to checkout</Button>
+        <Button>
+          <Link to="/payment">Proceed to checkout</Link>
+        </Button>
       </div>
       <section className="">
         {cartItems.map(cartItem => (
