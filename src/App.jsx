@@ -18,7 +18,12 @@ import FetchErrorPage from './pages/errors/FetchErrorPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" loader={rootLoader} element={<RootLayout />}>
+    <Route
+      path="/"
+      loader={rootLoader}
+      shouldRevalidate={() => false}
+      element={<RootLayout />}
+    >
       <Route index element={<Home />} />
       <Route
         path="products"

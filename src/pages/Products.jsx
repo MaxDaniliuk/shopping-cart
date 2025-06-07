@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useCallback } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import ProductsContext from '../contexts/ProductsContext';
 import FetchErrorPage from './errors/FetchErrorPage';
@@ -11,12 +11,12 @@ export default function Products() {
   const { incrementItem, decrementItem, removeItem } =
     useCartActions(setCartItems);
 
-  function addToCart(productToAdd) {
+  const addToCart = useCallback(function addToCart(productToAdd) {
     setCartItems(prevCartItems => [
       { ...productToAdd, inCart: 1 },
       ...prevCartItems,
     ]);
-  }
+  }, []);
   console.log('products');
 
   return error ? (

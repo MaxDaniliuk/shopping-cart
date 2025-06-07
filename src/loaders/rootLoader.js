@@ -1,7 +1,7 @@
 export async function rootLoader() {
-  const response = await fetch('https://fakestoreapi.com/products');
   console.log('fetched');
   try {
+    const response = await fetch('https://fakestoreapi.com/products');
     if (!response.ok) {
       throw new Error('Could not fetch products.');
     }

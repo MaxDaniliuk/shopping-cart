@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData } from 'react-router-dom';
+import { Outlet, useLoaderData, useLocation, Link } from 'react-router-dom';
 import { useState } from 'react';
 import CustomNavLink from '../components/CustomNavLink';
 import ProductsContext from '../contexts/ProductsContext';
@@ -6,28 +6,37 @@ import ProductsContext from '../contexts/ProductsContext';
 export default function RootLayout() {
   const [cartItems, setCartItems] = useState([]);
   const { products, error } = useLoaderData();
+  const { pathname } = useLocation();
+  const isCheckout = pathname === '/payment';
+  const isError = ['/', '/products', '/cart', '/payment'].includes(pathname);
 
   return (
     <ProductsContext.Provider value={{ products, error }}>
       <div className="root-layout flex min-h-screen flex-col bg-teal-500">
-        <header className="bg-blue-950">
-          <nav className="flex items-center justify-center p-[1em] text-[#fafafa]">
-            <h1 className="mr-auto text-3xl font-bold">e-Store</h1>
-            <div className="flex gap-2">
-              <CustomNavLink to="/">Home</CustomNavLink>
-              <CustomNavLink to="products">Products</CustomNavLink>
-              <CustomNavLink to="cart">
-                Cart{' '}
-                <span>
-                  {[...cartItems].reduce(
-                    (total, item) => total + item.inCart,
-                    0,
-                  )}
-                </span>
-              </CustomNavLink>
-            </div>
-          </nav>
-        </header>
+        {!isCheckout && (
+          <header className="bg-blue-950">
+            <nav className="flex items-center justify-center p-[1em] text-[#fafafa]">
+              <h1 className="mr-auto text-3xl font-bold">
+                <Link to="/">e-Store</Link>
+              </h1>
+              {isError && (
+                <div className="flex gap-2">
+                  <CustomNavLink to="/">Home</CustomNavLink>
+                  <CustomNavLink to="/products">Products</CustomNavLink>
+                  <CustomNavLink to="/cart">
+                    Cart{' '}
+                    <span>
+                      {[...cartItems].reduce(
+                        (total, item) => total + item.inCart,
+                        0,
+                      )}
+                    </span>
+                  </CustomNavLink>
+                </div>
+              )}
+            </nav>
+          </header>
+        )}
         <main className="mx-auto max-w-[2000px] p-[2em]">
           {/* // Centers each Outlet inside the main. */}
           <Outlet context={[cartItems, setCartItems]} />
