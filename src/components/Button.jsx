@@ -1,6 +1,6 @@
 export default function Button({ onClick, style, children }) {
   return (
-    <button style={style} onClick={onClick}>
+    <button className={`${style} cursor-pointer`} onClick={onClick}>
       {children}
     </button>
   );

@@ -12,7 +12,7 @@ export default function RootLayout() {
 
   return (
     <ProductsContext.Provider value={{ products, error }}>
-      <div className="root-layout flex min-h-screen flex-col bg-teal-500">
+      <div className="root-layout flex min-h-screen flex-col bg-white">
         {!isCheckout && (
           <header className="bg-blue-950">
             <nav className="flex items-center justify-center p-[1em] text-[#fafafa]">
@@ -38,13 +38,12 @@ export default function RootLayout() {
           </header>
         )}
         <main className="mx-auto max-w-[2000px] p-[2em]">
-          {/* // Centers each Outlet inside the main. */}
           <Outlet context={[cartItems, setCartItems]} />
         </main>
         <footer className="mt-auto">
           <div className="flex items-center justify-center bg-blue-950 p-[0.5em] text-[#fafafa]">
-            <p className="flex gap-[0.25em]">
-              <span>©</span>
+            <p className="flex items-center justify-center gap-[0.25em]">
+              <span className="text-[1.1rem]">©</span>
               <span>{new Date().getFullYear()}</span>
               <a
                 href="https://github.com/MaxDaniliuk/shopping-cart"
@@ -53,7 +52,7 @@ export default function RootLayout() {
                 aria-label="(Opens in a new tab)"
               >
                 <svg
-                  className="w-[clamp(0.9rem,1vw+1rem,2.2rem)]"
+                  className="w-[1em]"
                   viewBox="0 0 20 20"
                   version="1.1"
                   xmlns="http://www.w3.org/2000/svg"

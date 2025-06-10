@@ -17,14 +17,13 @@ export default function Products() {
       ...prevCartItems,
     ]);
   }, []);
-  console.log('products');
 
   return error ? (
     <FetchErrorPage message={error.message} />
   ) : (
     <div>
-      <h2>Results</h2>
-      <section className="grid grid-cols-3 gap-1.5">
+      <h1 className="mb-[0.2em] text-3xl font-bold">Results</h1>
+      <section className="grid auto-rows-min grid-cols-[repeat(auto-fill,minmax(min(240px,100%),1fr))] gap-8">
         {products.map(product => {
           const item = cartItems.find(ci => ci.id === product.id);
           return (
