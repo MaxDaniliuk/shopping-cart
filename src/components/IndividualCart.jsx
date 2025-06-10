@@ -21,7 +21,6 @@ const IndividualCart = memo(function IndividualCart({
           />
         </div>
         <div className={'p-[0.8em] ' + `${isShoppingPage ? 'w-1/2' : ''}`}>
-          {/* "w-1/2 p-[0.8em]" */}
           <h3 className="mb-[0.1em] text-lg font-bold">{product.title}</h3>
           <p className="mb-[0.5em]">
             {product.description.replace(
@@ -38,10 +37,10 @@ const IndividualCart = memo(function IndividualCart({
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-dollar-sign-icon lucide-dollar-sign"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-dollar-sign-icon lucide-dollar-sign"
               >
                 <line x1="12" x2="12" y1="2" y2="22" />
                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
